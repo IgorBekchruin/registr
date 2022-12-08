@@ -4,6 +4,8 @@ from .forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 
+def home(request):
+    return render(request, 'home.html')
 
 class Register(View):
     template_name = 'registration/register.html'
@@ -16,9 +18,9 @@ class Register(View):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             login(request, user)
             return redirect('home')
         return render(request, self.template_name, {'form': form})
